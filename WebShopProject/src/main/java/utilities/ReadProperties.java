@@ -6,11 +6,18 @@ import java.util.Properties;
 
 public class ReadProperties {
 
+	
+	
+	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 
 		
-		FileReader Fr = new FileReader("C:\\Users\\mayur\\eclipse-MyPracticeSeleniumWorkspace\\WebShopProject\\src\\main\\resources\\configfile\\config.properties");
+
+		FileReader Fr = new FileReader(
+				"C:\\Users\\mayur\\git\\Selenium-Test\\SeleniumD\\src\\main\\resources\\configfiles\\config.properties");
+		
+		
 		
 		Properties p = new Properties();    //object of properties class
 		p.load(Fr);

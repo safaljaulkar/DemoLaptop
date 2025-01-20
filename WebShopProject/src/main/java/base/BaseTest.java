@@ -9,22 +9,54 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
-public class BaseTest{
+public class BaseTest {
 
 	public static WebDriver driver; // driver reference
 
 	public static Properties prop = new Properties();
 	public static FileReader fr1;
+	public String userName = "Jerry1489@gmail.com";
+	public String password = "Jerry@1997";
+	ExtentReports extent;
+	
+	
+	@BeforeTest
 
-	@BeforeTest // annoted method run before test
+	public void ExtentRepost() {
+
+		String ReportPath = System.getProperty("user.dir") + "\\reports\\index.html"; // dynamic path of project
+
+		ExtentSparkReporter report = new ExtentSparkReporter(ReportPath);
+
+		report.config().setReportName("WebShopTestReport");
+		report.config().setReportName("WebShopTestReportTitle");
+
+		ExtentReports extent = new ExtentReports();
+		extent.attachReporter(report); // use to attach all configuration
+		extent.setSystemInfo("Operating System", "Windows11");
+		extent.setSystemInfo("Tested By", "Safal Jaulkar");
+
+	
+	}
+	
+	@Test // annoted method run before test
 	public void setup() throws IOException {
 
-
+		ExtentTest logintest = extent.createTest("VerifyLoginTest");
+		
 		if (driver == null) {
-			FileReader fr1 = new FileReader("C:\\Users\\mayur\\git\\Selenium-Test\\SeleniumD\\src\\main\\resources\\configfiles\\config.properties");
+			FileReader fr1 = new FileReader(
+					"C:\\Users\\mayur\\git\\Selenium-Test\\SeleniumD\\src\\main\\resources\\configfiles\\config.properties");
+			
+			
 			prop.load(fr1); // load the properties reader, object
 		}
 
@@ -39,12 +71,14 @@ public class BaseTest{
 			driver.get(prop.getProperty("testurl"));
 
 		}
-
 	}
+
+
 
 	@AfterTest
 	public void teardown() { // use to close
-		// driver.close();
+	//	driver.close();
+		extent.flush();    //Ending of the report
 		System.out.println("Done");
 
 	}
